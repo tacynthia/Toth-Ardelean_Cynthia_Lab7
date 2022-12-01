@@ -20,6 +20,8 @@
     <None Remove="Microsoft.Data.Sqlite.Core" />
     <None Remove="Migrations\" />
     <None Remove="Models\LibraryViewModels\" />
+    <None Remove="Microsoft.Web.LibraryManager.Build" />
+    <None Remove="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
@@ -34,11 +36,13 @@
     <PackageReference Include="NuGet.PackageManagement" Version="6.3.1" />
     <PackageReference Include="SQLite" Version="3.13.0" />
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="6.0.10" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
     <Folder Include="Migrations\" />
     <Folder Include="Models\LibraryViewModels\" />
+    <Folder Include="Hubs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LibraryModel\LibraryModel.csproj">

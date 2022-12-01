@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Toth_Ardelean_Cynthia_Lab2.Data;
+using Toth_Ardelean_Cynthia_Lab2.Hubs;
 
 internal class Program
 {
@@ -13,6 +14,8 @@ internal class Program
 
         builder.Services.AddDbContext<LibraryContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("NewLibraryConnection")));
+
+        builder.Services.AddSignalR();
 
         var app = builder.Build();
 
@@ -39,6 +42,8 @@ internal class Program
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.MapHub<ChatHub>("/Chat");
 
         app.Run();
     }
