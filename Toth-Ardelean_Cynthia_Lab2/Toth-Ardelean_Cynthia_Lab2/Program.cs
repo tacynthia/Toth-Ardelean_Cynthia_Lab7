@@ -18,12 +18,42 @@ internal class Program
         options.UseSqlite(builder.Configuration.GetConnectionString("NewLibraryConnection")));
 
         builder.Services.AddDefaultIdentity<IdentityUser>(options =>
-        options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
+        options.SignIn.RequireConfirmedAccount = true)
+            .AddRoles<IdentityRole>()
+            .AddEntityFrameworkStores<IdentityContext>();
 
         builder.Services.AddDbContext<IdentityContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("NewLibraryConnection")));
 
+        builder.Services.Configure<IdentityOptions>(options =>
+        {
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+            options.Lockout.MaxFailedAccessAttempts = 3;
+            options.Lockout.AllowedForNewUsers = true;
+            options.Password.RequiredLength = 8;
+        });
+
         builder.Services.AddSignalR();
+        builder.Services.AddRazorPages();
+
+        builder.Services.AddAuthorization(opts =>
+        {
+            opts.AddPolicy("OnlySales", policy =>
+            {
+                policy.RequireClaim("Department", "Sales");
+            });
+
+            opts.AddPolicy("SalesManager", policy =>
+            {
+                policy.RequireRole("Manager");
+                policy.RequireClaim("Department", "Sales");
+            });
+        });
+
+        builder.Services.ConfigureApplicationCookie(opts =>
+        {
+            opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+        });
 
         var app = builder.Build();
 

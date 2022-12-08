@@ -25,6 +25,8 @@
     <None Remove="Microsoft.AspNetCore.SignalR.Core" />
     <None Remove="Microsoft.AspNetCore.SignalR.Client" />
     <None Remove="json2" />
+    <None Remove="Views\Claims\" />
+    <None Remove="Views\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.0" />
@@ -55,6 +57,8 @@
     <Folder Include="Migrations\" />
     <Folder Include="Models\LibraryViewModels\" />
     <Folder Include="Hubs\" />
+    <Folder Include="Views\Claims\" />
+    <Folder Include="Views\Roles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\LibraryModel\LibraryModel.csproj">
