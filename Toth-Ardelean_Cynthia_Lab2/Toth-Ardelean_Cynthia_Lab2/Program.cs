@@ -1,6 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Toth_Ardelean_Cynthia_Lab2.Data;
+using Microsoft.AspNetCore.Identity;
+using Toth_Ardelean_Cynthia_Lab2.Areas.Identity.Data;
+using Toth_Ardelean_Cynthia_Lab2.Hubs;
 
 internal class Program
 {
@@ -13,6 +16,14 @@ internal class Program
 
         builder.Services.AddDbContext<LibraryContext>(options =>
         options.UseSqlite(builder.Configuration.GetConnectionString("NewLibraryConnection")));
+
+        builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+        options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<IdentityContext>();
+
+        builder.Services.AddDbContext<IdentityContext>(options =>
+        options.UseSqlite(builder.Configuration.GetConnectionString("NewLibraryConnection")));
+
+        builder.Services.AddSignalR();
 
         var app = builder.Build();
 
@@ -30,15 +41,20 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseDefaultFiles();
         app.UseStaticFiles();
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllerRoute(
             name: "default",
             pattern: "{controller=Home}/{action=Index}/{id?}");
+
+        app.MapHub<ChatHub>("/Chat");
+        app.MapRazorPages();
 
         app.Run();
     }
